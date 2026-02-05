@@ -1,1 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>PNX-JP Wiki</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
 
+  <!-- Persistent Site Header -->
+  <header id="site-header">
+    <div class="logo">
+      <a href="/index.html">PNX-JP</a>
+    </div>
+    <div class="account-links">
+      <span>My Account</span> | <a href="#">Login</a>
+    </div>
+    <form id="headerSearchForm">
+      <input type="text" placeholder="Search the Wiki">
+      <button type="submit">🔍</button>
+    </form>
+  </header>
+
+  <!-- Top navigation -->
+  <div id="topbar"></div>
+
+  <!-- Sidebar -->
+  <div id="sidebar"></div>
+
+  <!-- Main content area -->
+  <div id="content">
+    <h1>Welcome to PNX-JP Wiki</h1>
+    <p>This site is a Japanese branch of Project Nexium. Browse LOGs, staff records, and other pages.</p>
+
+    <h2>Basic Pages</h2>
+    <ul>
+      <li><a href="logs/log-001.html">LOG-001: Kurokami Signal</a></li>
+      <li><a href="logs/log-002.html">LOG-002: Midnight Archive</a></li>
+      <li><a href="staff/staff-001.html">Staff-001</a></li>
+      <li><a href="blank-template.html">Blank Template</a></li>
+    </ul>
+  </div>
+
+  <script src="assets/script.js"></script>
+  <script>
+    // Load sidebar and topbar (nav:side / nav:top)
+    fetch('nav/topbar.html')
+      .then(r => r.text())
+      .then(t => document.getElementById('topbar').innerHTML = t);
+
+    fetch('nav/sidebar.html')
+      .then(r => r.text())
+      .then(t => document.getElementById('sidebar').innerHTML = t);
+
+    // Header search functionality
+    document.getElementById('headerSearchForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const query = document.querySelector('#site-header input').value.toLowerCase();
+      const links = document.querySelectorAll('#sidebar a, #topbar a, #content a');
+      let found = false;
+
+      links.forEach(link => {
+        if(link.textContent.toLowerCase().includes(query)) {
+          window.location.href = link.href;
+          found = true;
+        }
+      });
+
+      if(!found) alert('No matching pages found.');
+    });
+  </script>
+</body>
